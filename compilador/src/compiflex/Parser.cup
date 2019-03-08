@@ -1,0 +1,197 @@
+package compiflex;
+
+import java_cup.runtime.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+
+parser code {:
+    private Writer writer;
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
+    public Writer getWriter() {
+        return this.writer;
+    }
+
+    public void append(String string) throws IOException {
+        this.writer.write(string);
+        this.writer.flush();
+    }
+:}
+
+
+
+/* Terminal symbols */
+
+
+terminal        STRING;
+terminal        ID ;
+terminal        DIGIT ;
+terminal        PUBLIC ;
+terminal        LLAVEA ;
+terminal        LLAVEC ;
+terminal        VOID ;
+terminal        PARENA ;
+terminal        PARAMLIST ;
+terminal        PARENC;
+terminal        RETURN ;
+terminal        PUNTOYCOMA ;
+terminal        IGUAL ;
+terminal        PLUS ;
+terminal        MENOS ;
+terminal        POR ;
+terminal        DIV ;
+terminal        INT ;
+terminal        FLOAT ;
+terminal        DOBLE ;
+
+
+
+/* Non terminal symbols */
+
+non terminal    prog;
+non terminal    estruct ;
+non terminal    clase ;
+non terminal    proc ;
+non terminal    func ;
+non terminal    type ;
+non terminal    contenido ;
+non terminal    declaracion ;
+non terminal    igualdad ;
+non terminal    comandos ;
+
+
+
+/* Associativity and precedence */
+precedence left PLUS, IGUAL, MENOS, POR, DIV;
+
+// My Grammar
+
+
+
+prog        ::=     estruct;
+
+estruct     ::=     clase estruct
+            |       proc estruct
+            |       func estruct
+            |       ;
+
+clase       ::=     PUBLIC clase ID 
+                   LLAVEA contenido LLAVEC;
+
+proc        ::=     VOID ID PARENA
+                   PARAMLIST PARENC
+                   LLAVEA contenido LLAVEC;
+
+func        ::=     type ID PARENA PARAMLIST
+            |       PARENC LLAVEC contenido 
+            |       RETURN ID PUNTOYCOMA
+            |       LLAVEC;
+
+contenido   ::=     declaracion contenido
+            |       igualdad contenido 
+            |       comandos;
+
+type        ::=     STRING 
+            |       INT 
+            |       DOBLE
+            |       FLOAT;
+
+declaracion ::=     type ID PUNTOYCOMA;
+    
+
+igualdad    ::=     type ID IGUAL DIGIT PUNTOYCOMA;
+            
+
+comandos    ::=     ID IGUAL ID PLUS DIGIT
+            |       ID IGUAL ID MENOS DIGIT
+            |       ID IGUAL ID POR DIGIT
+            |       ID IGUAL ID DIV DIGIT;
+
+
+/***** Grammar Actions *****/
+prog                 ::=     estruct:val PUNTOYCOMA 
+                                {:                                  
+                                    parser.getWriter().close();
+
+                                    RESULT = true;
+                                :}
+                        ;
+estruct                    ::=     estruct:lval clase term:rval 
+                                {: 
+                                    parser.append(" clase ");                                     
+                                :}
+                        |       expr:lval MINUS term:rval 
+                                {: 
+                                    parser.append(" MINUS "); 
+                                :}
+                        |       term:val {: RESULT = val; :}
+                        ;
+term                    ::=     term:lval TIMES factor:rval
+                                {: 
+                                    parser.append(" MULTIPLY BY "); 
+                                :}
+                        |       term:lval DIV factor:rval
+                                {: 
+                                    parser.append(" DIVIDE BY ");                                     
+                                :}
+                        |       term:lval MOD factor:rval
+                                {: 
+                                    parser.append(" MOD ");                                     
+                                :}
+                        |       factor:val  {: RESULT = val; :}
+                        ;
+factor                  ::=     NUMBER:val 
+                                {: 
+                                    switch (val) {
+                                        case 0: {
+                                            parser.append("zero");                                            
+                                            break;
+                                        }
+                                        case 1: {
+                                            parser.append("one");                                            
+                                            break;
+                                        }
+                                        case 2: {
+                                            parser.append("two");                                            
+                                            break;
+                                        }
+                                        case 3: {
+                                            parser.append("three");                                            
+                                            break;
+                                        }
+                                        case 4: {
+                                            parser.append("four");                                            
+                                            break;
+                                        }
+                                        case 5: {
+                                            parser.append("five");                                            
+                                            break;
+                                        }
+                                        case 6: {
+                                            parser.append("six");                                            
+                                            break;
+                                        }
+                                        case 7: {
+                                            parser.append("seven");                                            
+                                            break;
+                                        }
+                                        case 8: {
+                                            parser.append("eight");                                            
+                                            break;
+                                        }
+                                        case 9: {
+                                            parser.append("nine");                                            
+                                            break;
+                                        }
+                                        default: {
+                                            RESULT = "unknown";
+                                        }
+                                    }
+                                :}
+                        |       LPAR expr:val RPAR {: RESULT = "LEFT PARENTHESIS " + val + " RIGHT PARENTHESIS"; :}
+                        ;

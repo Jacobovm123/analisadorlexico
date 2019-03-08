@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7784a96-e1ba-4561-b1f6-23d74797073f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     TOKENS."ID" AS TOKENS_ID,
+     TOKENS."TOKEN" AS TOKENS_TOKEN,
+     TOKENS."VALOR" AS TOKENS_VALOR
+FROM
+     "COMPILADORES"."TOKENS" TOKENS]]>
+	</queryString>
+	<field name="TOKENS_ID" class="java.math.BigDecimal"/>
+	<field name="TOKENS_TOKEN" class="java.lang.String"/>
+	<field name="TOKENS_VALOR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="22" y="2" width="100" height="20" uuid="761ee1ae-3c82-4afa-b228-ab7cebacc4b6"/>
+				<text><![CDATA[TOKENS_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="2" width="100" height="20" uuid="da2bca4a-784f-4f11-9fea-a024b4f2a1e9"/>
+				<text><![CDATA[TOKENS_TOKEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="2" width="100" height="20" uuid="fb6d8423-75e2-46e6-9301-25684413ed6d"/>
+				<text><![CDATA[TOKENS_VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="0" width="100" height="20" uuid="4a472c65-c408-4069-9e5a-491eca84d786"/>
+				<textFieldExpression><![CDATA[$F{TOKENS_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="0" width="100" height="20" uuid="0f784b18-aa7b-4f34-ae2f-55777449bf4c"/>
+				<textFieldExpression><![CDATA[$F{TOKENS_TOKEN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="0" width="100" height="20" uuid="40730911-8984-46fb-9a48-b23a03060b85"/>
+				<textFieldExpression><![CDATA[$F{TOKENS_VALOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="54" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
